@@ -1,6 +1,6 @@
 class WeatherService
-  def self.get_forecast(lat, lng)
-    get_json(lat, lng, 'minutely,alerts,flags')
+  def self.get_forecast(coordinates)
+    get_json(coordinates[:lat], coordinates[:lng], 'minutely,alerts,flags')
   end
 
   private
