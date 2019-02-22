@@ -14,7 +14,7 @@ describe WeatherFacade, type: :facade do
 
         expect(currently).to be_a(Weather)
         expect(hourlies).to all(be_a(Weather))
-        expect(hourlies.count).to eq(48)
+        expect(hourlies.count).to eq(49)
         expect(dailies).to all(be_a(Weather))
         expect(dailies.count).to eq(8)
 

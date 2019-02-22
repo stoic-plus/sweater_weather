@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'Weather for a City', type: :request do
   context 'given a request to /forecast with valid city/state in location param' do
-    it 'returns JSON with current, next 48 hours, and next week weather data' do
+    it 'returns JSON with current, next 49 hours, and next week weather data' do
       get '/api/v1/forecast', params: {location: 'denver,co'}
 
       expect(response).to be_successful
@@ -25,7 +25,7 @@ describe 'Weather for a City', type: :request do
       expect(daily).to have_key(:summary)
       expect(daily).to have_key(:icon)
       expect(daily).to have_key(:data)
-      expect(daily[:data].size).to eq(48)
+      expect(daily[:data].size).to eq(49)
       first_hour = daily[:data].first
       expect(first_hour).to have_key(:time)
       expect(first_hour).to have_key(:summary)
