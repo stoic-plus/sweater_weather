@@ -5,7 +5,7 @@ describe WeatherService, type: :service do
   describe 'class methods' do
     context 'get_forecast' do
       it 'returns current, hourly, and weekly weather JSON data given lat and lng' do
-        forecast = service.get_forecast("39.7392358", "-104.990251")
+        forecast = service.get_forecast(lat: "39.7392358", lng: "-104.990251")
 
         expect(forecast).to have_key(:latitude)
         expect(forecast).to have_key(:longitude)

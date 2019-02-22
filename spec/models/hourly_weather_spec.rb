@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe HourlyWeather, type: :model do
   it 'can be initialized with attributes', :vcr do
-    weather = WeatherService.get_forecast("39.7392358", "-104.990251")
+    weather = WeatherService.get_forecast(lat: "39.7392358", lng: "-104.990251")
 
     first_hour_weather = weather[:hourly][:data].first
     hourly = HourlyWeather.new(first_hour_weather)
@@ -20,7 +20,7 @@ describe HourlyWeather, type: :model do
     expect(hourly.ozone).to eq(first_hour_weather[:ozone])
   end
   it 'can be initialized with current weather attributes', :vcr do
-    weather = WeatherService.get_forecast("39.7392358", "-104.990251")
+    weather = WeatherService.get_forecast(lat: "39.7392358", lng: "-104.990251")
 
     current_weather = weather[:currently]
     currently = HourlyWeather.new(current_weather)

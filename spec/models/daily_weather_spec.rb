@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe DailyWeather, type: :model do
   it 'can be initialized with attributes', :vcr do
-    weather = WeatherService.get_forecast("39.7392358", "-104.990251")
+    weather = WeatherService.get_forecast(lat: "39.7392358", lng: "-104.990251")
 
     first_day_weather = weather[:daily][:data].first
     daily = DailyWeather.new(first_day_weather)
