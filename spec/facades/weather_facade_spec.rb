@@ -4,9 +4,10 @@ describe WeatherFacade, type: :facade do
   let(:facade) { WeatherFacade }
   describe 'class methods' do
     context '.get_forecast' do
-      it 'returns Forecast Object with appropriate methods and Weather Objects - given valid city,state' do
+      it 'returns Forecast Object with appropriate methods and Weather Objects - given valid city,state', :vcr do
         forecast = facade.get_forecast("denver,co")
 
+        expect(forecast).to be_a(Forecast)
         currently = forecast.currently
         hourlies = forecast.hourly
         dailies = forecast.daily
