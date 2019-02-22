@@ -12,10 +12,10 @@ class WeatherFacade
 
   def self.weather_attributes(weather_json)
     {
-      currently: Weather.new(weather_json[:currently]),
+      currently: HourlyWeather.new(weather_json[:currently]),
       today_summary: weather_json[:daily][:summary],
-      hourly: weather_json[:hourly][:data].map{|weather_info| Weather.new(weather_info) },
-      daily: weather_json[:daily][:data].map{|weather_info| Weather.new(weather_info) }
+      hourly: weather_json[:hourly][:data].map{|weather_info| HourlyWeather.new(weather_info) },
+      daily: weather_json[:daily][:data].map{|weather_info| DailyWeather.new(weather_info) }
     }
   end
 end
