@@ -12,10 +12,10 @@ describe WeatherFacade, type: :facade do
         hourlies = forecast.hourly
         dailies = forecast.daily
 
-        expect(currently).to be_a(Weather)
-        expect(hourlies).to all(be_a(Weather))
+        expect(currently).to be_a(HourlyWeather)
+        expect(hourlies).to all(be_a(HourlyWeather))
         expect(hourlies.count).to eq(49)
-        expect(dailies).to all(be_a(Weather))
+        expect(dailies).to all(be_a(DailyWeather))
         expect(dailies.count).to eq(8)
 
         expect(forecast.today_high).to eq(dailies.first.temperatureHigh)
