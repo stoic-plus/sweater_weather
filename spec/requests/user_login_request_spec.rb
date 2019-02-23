@@ -2,19 +2,16 @@ require 'rails_helper'
 
 describe 'User Login', type: :request do
   context 'when sending a POST to /api/v1/sessions with valid email and password' do
-    before :each do
-      @user = User.create(email: "whatever@example.com", password: "password")
-    end
     it 'returns appropriate JSON' do
-      body = {
-        "email" => "whatever@example.com",
-        "password" => "password",
-      }
+      user = User.create(email: "whatever@example.com", password: "password", password_confirmation: "password")
+      email = "whatever@example.com"
+      password = "password"
+
       headers = {
         "Content-Type" => "application/json",
         "Accept" => "application/json"
       }
-      post '/api/v1/sessions', params: { user: body , headers: headers }
+      post '/api/v1/sessions', params: { email: email, password: password, headers: headers }
 
       json = JSON.parse(response.body)
       expect(json["status"]).to eq(200)
@@ -24,17 +21,18 @@ describe 'User Login', type: :request do
       expect(response.status).to eq(200)
     end
   end
-  context 'when sending a POST to /api/v1/sessions with valid email and password' do
+  context 'when sending a POST to /api/v1/sessions with invalid email and password' do
     it 'returns appropriate JSON' do
-      body = {
-        "email" => "whatever@example.com",
-        "password" => "password123",
-      }
+      User.create(email: "whatever@example.com", password: "password", password_confirmation: "password")
+
+      email = "whatever@example.com"
+      password = "password123"
+
       headers = {
         "Content-Type" => "application/json",
         "Accept" => "application/json"
       }
-      post '/api/v1/sessions', params: { user: body , headers: headers }
+      post '/api/v1/sessions', params: { email: email, password: password, headers: headers }
 
       json = JSON.parse(response.body)
       expect(json["status"]).to eq(400)
