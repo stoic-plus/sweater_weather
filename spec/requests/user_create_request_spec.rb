@@ -21,6 +21,24 @@ describe 'User Creation', type: :request do
       expect(response.content_type).to eq("application/json")
       expect(response.status).to eq(201)
     end
+    it 'creates a user in database with api key' do
+      body = {
+        "email" => "whatever@example.com",
+        "password" => "password",
+        "password_confirmation" => "password"
+      }
+      headers = {
+        "Content-Type" => "application/json",
+        "Accept" => "application/json"
+      }
+      expect(User.count).to eq(0)
+      post '/api/v1/users', params: { user: body , headers: headers }
+
+      expect(User.count).to eq(1)
+      created_user = User.first
+      expect(created_user.email).to eq(body["email"])
+      expect(created_user.api_key).to be_a(String)
+    end
   end
   context 'when a POST req is made to /api/v1/users with invalid data' do
     it 'returns appropriate JSON' do
