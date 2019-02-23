@@ -1,11 +1,16 @@
 module ApplicationHelper
-  class ApiError
+  class ApiMessage
     @@count = 0
     attr_reader :message, :id
     def initialize(attributes)
       @id = @@count
       @@count += 1
       @message = attributes[:message]
+    end
+  end
+  class ApiError < ApiMessage
+    def initialize(attributes)
+      super
     end
   end
   class ApiKey
