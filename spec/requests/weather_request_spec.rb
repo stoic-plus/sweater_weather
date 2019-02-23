@@ -9,9 +9,9 @@ describe 'Weather for a City', type: :request do
 
       weather = JSON.parse(response.body, symbolize_names: true)[:data]
 
-      current = weather[:current]
-      daily = weather[:forecast][:daily]
-      weekly = weather[:forecast][:weekly]
+      current = weather[:attributes][:currently]
+      hourly = weather[:attributes][:hourly_forecast]
+      daily = weather[:attributes][:daily_forecast]
 
       expect(current).to have_key(:time)
       expect(current).to have_key(:summary)
@@ -22,11 +22,8 @@ describe 'Weather for a City', type: :request do
       expect(current).to have_key(:visibility)
       expect(current).to have_key(:uvIndex)
 
-      expect(daily).to have_key(:summary)
-      expect(daily).to have_key(:icon)
-      expect(daily).to have_key(:data)
-      expect(daily[:data].size).to eq(49)
-      first_hour = daily[:data].first
+      expect(hourly.size).to eq(49)
+      first_hour = hourly.first
       expect(first_hour).to have_key(:time)
       expect(first_hour).to have_key(:summary)
       expect(first_hour).to have_key(:icon)
@@ -34,11 +31,8 @@ describe 'Weather for a City', type: :request do
       expect(first_hour).to have_key(:temperature)
       expect(first_hour).to have_key(:apparentTemperature)
 
-      expect(weekly).to have_key(:summary)
-      expect(weekly).to have_key(:icon)
-      expect(weekly).to have_key(:data)
-      expect(weekly[:data].size).to eq(8)
-      first_day = weekly[:data].first
+      expect(daily.size).to eq(8)
+      first_day = daily.first
       expect(first_day).to have_key(:time)
       expect(first_day).to have_key(:summary)
       expect(first_day).to have_key(:icon)
