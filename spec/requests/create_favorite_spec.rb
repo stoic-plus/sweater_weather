@@ -2,12 +2,13 @@ require 'rails_helper'
 
 describe 'Create Favorite', type: :request do
   context 'when sending a POST to /api/v1/favorites with location and api key' do
-    it 'responds with appropriate json and 200 status' do
+    it 'responds with appropriate json and 200 status', :vcr do
       user = User.create(email: "whatever@example.com", password: "password", password_confirmation: "password")
       headers = {
         "Content-Type" => "application/json",
         "Accept" => "application/json"
       }
+      binding.pry
       post '/api/v1/favorites', params: { location: "Denver, CO", api_key: user.api_key, headers: headers }
 
       json = JSON.parse(response.body)["data"]["attributes"]
@@ -18,7 +19,7 @@ describe 'Create Favorite', type: :request do
     end
   end
   context 'when sending a POST to /api/v1/favorites with location only' do
-    it 'responds with appropriate json and 401 status' do
+    it 'responds with appropriate json and 401 status', :vcr do
       headers = {
         "Content-Type" => "application/json",
         "Accept" => "application/json"
