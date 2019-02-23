@@ -40,6 +40,12 @@ VCR.configure do |c|
   c.allow_http_connections_when_no_cassette = true
   c.configure_rspec_metadata!
 end
+Shoulda::Matchers.configure do |config|
+    config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
