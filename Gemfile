@@ -40,6 +40,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 group :development, :test do
   gem 'fast_jsonapi'
   gem 'pry'
+  gem 'shoulda-matchers'
   gem 'rspec-rails'
   gem 'webmock'
   gem 'vcr'
