@@ -15,8 +15,8 @@ class WeatherFacade
     {
       currently: HourlyWeather.new(weather_json[:currently]),
       today_summary: weather_json[:daily][:summary],
-      hourly: weather_json[:hourly][:data].map{|weather_info| HourlyWeather.new(weather_info) },
-      daily: weather_json[:daily][:data].map{|weather_info| DailyWeather.new(weather_info) }
+      hourly_forecast: weather_json[:hourly][:data].map{|weather_info| HourlyWeather.new(weather_info) },
+      daily_forecast: weather_json[:daily][:data].map{|weather_info| DailyWeather.new(weather_info) }
     }
   end
 end
