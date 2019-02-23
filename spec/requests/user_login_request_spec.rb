@@ -14,7 +14,6 @@ describe 'User Login', type: :request do
       post '/api/v1/sessions', params: { email: email, password: password, headers: headers }
 
       json = JSON.parse(response.body)
-      expect(json["status"]).to eq(200)
       expect(json["api_key"]).to eq(user.api_key)
       expect(response).to be_successful
       expect(response.content_type).to eq("application/json")
@@ -34,8 +33,7 @@ describe 'User Login', type: :request do
       }
       post '/api/v1/sessions', params: { email: email, password: password, headers: headers }
 
-      json = JSON.parse(response.body)
-      expect(json["status"]).to eq(400)
+      json = JSON.parse(response.body)["data"]["attributes"]
       expect(json).to_not have_key("api_key")
       expect(response.content_type).to eq("application/json")
       expect(response.status).to eq(400)
