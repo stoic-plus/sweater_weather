@@ -12,8 +12,8 @@ describe 'User Creation', type: :request do
         "Content-Type" => "application/json",
         "Accept" => "application/json"
       }
-      post '/api/v1/users', body, headers
-
+      post '/api/v1/users', params: { user: body , headers: headers }
+      
       expect(response).to be_successful
       expect(response.content_type).to eq("application/json")
       expect(response.status).to eq(201)
