@@ -7,7 +7,8 @@ class WeatherFacade
   private
 
   def self.get_coordinates(city_state)
-    GeocodingService.get_lat_lng(city_state)
+    coordinates = GeocodingService.get_lat_lng(city_state)
+    return {lat: coordinates[:lat], lng: coordinates[:lng]}
   end
 
   def self.weather_attributes(weather_json)
