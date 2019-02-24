@@ -14,7 +14,7 @@ class WeatherFacade
   def self.weather_attributes(weather_json)
     {
       currently: HourlyWeather.new(weather_json[:currently]),
-      today_summary: weather_json[:daily][:summary],
+      today_summary: weather_json[:hourly][:summary],
       hourly_forecast: weather_json[:hourly][:data].map{|weather_info| HourlyWeather.new(weather_info) },
       daily_forecast: weather_json[:daily][:data].map{|weather_info| DailyWeather.new(weather_info) }
     }
