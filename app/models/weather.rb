@@ -12,4 +12,10 @@ class Weather
     @humidity = attributes[:humidity]
     @uvIndex = attributes[:uvIndex]
   end
+
+  def self.from_weather_data(weather_data)
+    weather_data.map do |raw_data|
+      new(raw_data)
+    end
+  end
 end
