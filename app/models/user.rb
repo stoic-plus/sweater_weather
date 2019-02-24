@@ -1,5 +1,8 @@
 class User < ApplicationRecord
   has_secure_password
+  has_many :favorites
+  has_many :locations, through: :favorites
+  
   validates_presence_of :email, :password
   validates :password_confirmation, presence: true, on: :create
 end
