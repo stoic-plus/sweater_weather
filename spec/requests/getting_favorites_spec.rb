@@ -30,11 +30,23 @@ describe 'Getting Favorites', type: :request do
 
       get '/api/v1/favorites', params: { api_key: user.api_key, headers: headers }
 
-      json = JSON.parse(response.body)["data"]["attributes"]
+      json = JSON.parse(response.body)["data"]
       expect(json.size).to eq(2)
       expect(response).to be_successful
       expect(response.content_type).to eq("application/json")
       expect(response.status).to eq(200)
+
+      expect(json.first["attributes"]["location"]).to eq("Denver, CO")
+      expect(json.second["attributes"]["location"]).to eq("Austin, TX")
+      json.each do |location_json|
+        expect(location_json["attributes"]["current_weather"]).to have_key("summary")
+        expect(location_json["attributes"]["current_weather"]).to have_key("precipProbability")
+        expect(location_json["attributes"]["current_weather"]).to have_key("humidity")
+        expect(location_json["attributes"]["current_weather"]).to have_key("uvIndex")
+        expect(location_json["attributes"]["current_weather"]).to have_key("time")
+        expect(location_json["attributes"]["current_weather"]).to have_key("temperature")
+        expect(location_json["attributes"]["current_weather"]).to have_key("apparentTemperature")
+      end
     end
   end
 end
