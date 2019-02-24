@@ -7,7 +7,7 @@ class Api::V1::FavoritesController < Api::V1::BaseController
   end
 
   def create
-    add_favorite(standardize_location(params["location"]), params["api_key"])
+    User.find_by(api_key: params["api_key"]).locations << Location.find_or_make_by(params["location"])
     render json: ApiMessageSerializer.new(ApiMessage.new(message: "successfully created favorite")), status: 200
   end
 
@@ -23,26 +23,6 @@ class Api::V1::FavoritesController < Api::V1::BaseController
 
   def require_valid_api_key
     api_key = params["api_key"]
-    return render_api_key_error(params["api_key"]) unless api_key && User.find_by(api_key: api_key)
-  end
-
-  def create_or_find_location(location)
-    coordinates = GeocodingService.get_lat_lng("#{location[:city]},#{location[:state]}")
-    Location.find_or_create_by(
-      city: location[:city],
-      state: location[:state],
-      latitude: coordinates[:lat],
-      longitude: coordinates[:lng]
-    )
-  end
-
-  def add_favorite(location, api_key)
-    location = create_or_find_location(location)
-    User.find_by(api_key: api_key).locations << location
-  end
-
-  def standardize_location(location)
-    city, state = location.gsub(" ", "").downcase.split(",")
-    {city: city, state: state}
+    render_api_key_error(params["api_key"]) unless api_key && User.find_by(api_key: api_key)
   end
 end
