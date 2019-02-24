@@ -17,11 +17,11 @@ class DailyWeather < Weather
 
   def initialize(attributes)
     super(
-      attributes[:summary],
-      attributes[:icon],
-      attributes[:precipProbability],
-      attributes[:humidity],
-      attributes[:uvIndex])
+      summary: attributes[:summary],
+      icon: attributes[:icon],
+      precipProbability: attributes[:precipProbability],
+      humidity: attributes[:humidity],
+      uvIndex: attributes[:uvIndex])
     @time = attributes[:time]
     @precipType = attributes[:precipType]
     @temperatureHigh = attributes[:temperatureHigh]
