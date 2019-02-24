@@ -1,4 +1,4 @@
-class HourlyWeather
+class HourlyWeather < Weather
   attr_reader :time,
               :summary,
               :icon,
@@ -12,17 +12,20 @@ class HourlyWeather
               :ozone,
               :nearestStormDistance,
               :nearestStormBearing
-            
+
   def initialize(attributes)
+    super(
+      attributes[:summary],
+      attributes[:icon],
+      attributes[:precipProbability],
+      attributes[:humidity],
+      attributes[:uvIndex]
+    )
     @time = attributes[:time]
-    @summary = attributes[:summary]
     @icon = attributes[:icon]
-    @precipProbability = attributes[:precipProbability]
     @temperature = attributes[:temperature]
     @apparentTemperature = attributes[:apparentTemperature]
-    @humidity = attributes[:humidity]
     @pressure = attributes[:pressure]
-    @uvIndex = attributes[:uvIndex]
     @visibility = attributes[:visibility]
     @ozone = attributes[:ozone]
     @nearestStormDistance = attributes[:nearestStormDistance]
