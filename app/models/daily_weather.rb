@@ -1,4 +1,4 @@
-class DailyWeather
+class DailyWeather < Weather
   attr_reader :time,
               :summary,
               :icon,
@@ -16,17 +16,18 @@ class DailyWeather
               :apparentTemperatureMin
 
   def initialize(attributes)
+    super(
+      attributes[:summary],
+      attributes[:icon],
+      attributes[:precipProbability],
+      attributes[:humidity],
+      attributes[:uvIndex])
     @time = attributes[:time]
-    @summary = attributes[:summary]
-    @icon = attributes[:icon]
-    @precipProbability = attributes[:precipProbability]
     @precipType = attributes[:precipType]
     @temperatureHigh = attributes[:temperatureHigh]
     @temperatureLow = attributes[:temperatureLow]
     @apparentTemperatureHigh = attributes[:apparentTemperatureHigh]
     @apparentTemperatureLow = attributes[:apparentTemperatureLow]
-    @humidity = attributes[:humidity]
-    @uvIndex = attributes[:uvIndex]
     @temperatureMin = attributes[:temperatureMin]
     @temperatureMax = attributes[:temperatureMax]
     @apparentTemperatureMax = attributes[:apparentTemperatureMax]
