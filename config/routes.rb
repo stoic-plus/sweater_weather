@@ -4,7 +4,8 @@ Rails.application.routes.draw do
       get '/forecast', to: "forecast#show"
       resources :users, only: [:create]
       resources :sessions, only: [:create]
-      resources :favorites, only: [:index, :create, :destroy]
+      resources :favorites, only: [:index, :create]
+      delete 'favorites', to: "favorites#destroy"
     end
   end
 end
