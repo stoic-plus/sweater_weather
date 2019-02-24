@@ -6,10 +6,10 @@ describe Weather, type: :model do
 
     first_hour_weather = weather[:hourly][:data].first
     weather = Weather.new(first_hour_weather)
-    expect(hourly.summary).to eq(first_hour_weather[:summary])
-    expect(hourly.icon).to eq(first_hour_weather[:icon])
-    expect(hourly.precipProbability).to eq(first_hour_weather[:precipProbability])
-    expect(hourly.humidity).to eq(first_hour_weather[:humidity])
-    expect(hourly.uvIndex).to eq(first_hour_weather[:uvIndex])
+    expect(weather.summary).to eq(first_hour_weather[:summary])
+    expect(weather.icon).to eq(first_hour_weather[:icon])
+    expect(weather.precipProbability).to eq(first_hour_weather[:precipProbability])
+    expect(weather.humidity).to eq(first_hour_weather[:humidity])
+    expect(weather.uvIndex).to eq(first_hour_weather[:uvIndex])
   end
 end
