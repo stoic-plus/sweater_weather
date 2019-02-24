@@ -49,4 +49,39 @@ describe 'Getting Favorites', type: :request do
       end
     end
   end
+  context 'when a GET is made to /api/v1/favorites without API key' do
+    it 'responds with appropriate json and 401 status', :vcr do
+      headers = {
+        "Content-Type" => "application/json",
+        "Accept" => "application/json"
+      }
+      get '/api/v1/favorites', params: { location: "Denver, CO", headers: headers }
+
+      json = JSON.parse(response.body)["data"]["attributes"]
+      expect(json["message"]).to eq("must provide api_key")
+      expect(response.content_type).to eq("application/json")
+      expect(response.status).to eq(401)
+    end
+  end
+  context 'when a GET is made to /api/v1/favorites with invalid api key' do
+    it 'responds with appropriate json and 404 status', :vcr do
+      User.create(
+        email: "whatever@example.com",
+        password: "password",
+        password_confirmation: "password",
+        api_key: 'ashdgashdgajhsdga2342'
+      )
+
+      headers = {
+        "Content-Type" => "application/json",
+        "Accept" => "application/json"
+      }
+      get '/api/v1/favorites', params: { location: "Denver, CO", api_key: 'WRONG', headers: headers }
+
+      json = JSON.parse(response.body)["data"]["attributes"]
+      expect(json["message"]).to eq('invalid api_key')
+      expect(response.content_type).to eq("application/json")
+      expect(response.status).to eq(404)
+    end
+  end
 end
