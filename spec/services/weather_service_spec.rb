@@ -49,5 +49,22 @@ describe WeatherService, type: :service do
         expect(first_day).to have_key(:uvIndex)
       end
     end
+    context '.get_current_weather' do
+      it 'returns current weather for location given lat and lng' do
+        current_weather = service.get_current_weather(lat: "39.7392358", lng: "-104.990251")
+
+        expect(current_weather).to have_key(:latitude)
+        expect(current_weather).to have_key(:longitude)
+        expect(current_weather).to have_key(:timezone)
+        currently = forecast[:currently]
+        expect(currently).to have_key(:time)
+        expect(currently).to have_key(:summary)
+        expect(currently).to have_key(:icon)
+        expect(currently).to have_key(:nearestStormDistance)
+        expect(currently).to have_key(:precipProbability)
+        expect(currently).to have_key(:apparentTemperature)
+        expect(currently).to have_key(:uvIndex)
+      end
+    end
   end
 end
