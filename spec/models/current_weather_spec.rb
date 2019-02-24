@@ -4,7 +4,7 @@ describe CurrentWeather, type: :model do
   describe 'class methods' do
     context '.for_location' do
       it 'returns instance of itself given lat and lng', :vcr do
-        current_weather_json = WeatherService.get_current_weather(lat: "39.7392358", lng: "-104.990251")
+        current_weather_json = WeatherService.get_current_weather(lat: "39.7392358", lng: "-104.990251")[:currently]
         current_weather = CurrentWeather.for_location(lat: "39.7392358", lng: "-104.990251")
 
         expect(current_weather).to be_a(CurrentWeather)

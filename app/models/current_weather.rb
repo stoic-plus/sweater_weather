@@ -31,4 +31,8 @@ class CurrentWeather < Weather
     @nearestStormDistance = attributes[:nearestStormDistance]
     @nearestStormBearing = attributes[:nearestStormBearing]
   end
+
+  def self.for_location(coordinates)
+    new(WeatherService.get_current_weather(coordinates)[:currently])
+  end
 end
