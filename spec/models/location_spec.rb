@@ -8,7 +8,7 @@ describe Location, type: :model do
     it { should validate_presence_of(:longitude) }
   end
   describe 'relationships' do
-    it { should have_many :favorites }
+    it { should have_many(:favorites).dependent(:destroy) }
     it { should have_many(:users).through(:favorites) }
   end
 end
