@@ -16,9 +16,19 @@ class Api::V1::FavoritesController < Api::V1::BaseController
     end
   end
 
+  def create_location(location)
+    coordinates = GeocodingService.get_lat_lng("#{location[:city]},#{location[:state]}")
+    Location.create(
+      city: location[:city],
+      state: location[:state],
+      latitide: coordinates[:lat],
+      longitude: coordinates[:lng]
+    )
+  end
+
   def add_favorite(location, api_key)
-    
-    Location.create(city: location[:city], state: location[:state], )
+    location = create_location(location)
+    User.find_by(api_key: api_key).locations << location
   end
 
   def standardize_location(location)
