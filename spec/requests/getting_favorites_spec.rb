@@ -28,7 +28,7 @@ describe 'Getting Favorites', type: :request do
         "Accept" => "application/json"
       }
 
-      get 'api/v1/favorites', params: { api_key: user.api_key, headers: headers }
+      get '/api/v1/favorites', params: { api_key: user.api_key, headers: headers }
 
       json = JSON.parse(response.body)["data"]["attributes"]
       expect(json.size).to eq(2)

@@ -1,7 +1,11 @@
 class Api::V1::FavoritesController < Api::V1::BaseController
+  before_action :require_valid_api_key
+
+  def index
+    
+  end
+
   def create
-    api_key = params["api_key"]
-    return render_api_key_error(params["api_key"]) unless api_key && User.find_by(api_key: api_key)
     add_favorite(standardize_location(params["location"]), params["api_key"])
     render json: ApiMessageSerializer.new(ApiMessage.new(message: "successfully created favorite")), status: 200
   end
@@ -14,6 +18,11 @@ class Api::V1::FavoritesController < Api::V1::BaseController
     else
       render_error(message: 'must provide api_key', status: 401)
     end
+  end
+
+  def require_valid_api_key
+    api_key = params["api_key"]
+    return render_api_key_error(params["api_key"]) unless api_key && User.find_by(api_key: api_key)
   end
 
   def create_or_find_location(location)
