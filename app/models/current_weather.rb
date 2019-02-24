@@ -1,4 +1,4 @@
-class HourlyWeather < Weather
+class CurrentWeather < Weather
   attr_reader :time,
               :summary,
               :icon,
@@ -9,7 +9,9 @@ class HourlyWeather < Weather
               :pressure,
               :uvIndex,
               :visibility,
-              :ozone
+              :ozone,
+              :nearestStormDistance,
+              :nearestStormBearing
 
   def initialize(attributes)
     super(
@@ -26,5 +28,11 @@ class HourlyWeather < Weather
     @pressure = attributes[:pressure]
     @visibility = attributes[:visibility]
     @ozone = attributes[:ozone]
+    @nearestStormDistance = attributes[:nearestStormDistance]
+    @nearestStormBearing = attributes[:nearestStormBearing]
+  end
+
+  def self.for_location(coordinates)
+    new(WeatherService.get_current_weather(coordinates)[:currently])
   end
 end

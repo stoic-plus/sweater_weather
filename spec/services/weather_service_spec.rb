@@ -4,7 +4,7 @@ describe WeatherService, type: :service do
   let(:service) { WeatherService }
   describe 'class methods' do
     context 'get_forecast' do
-      it 'returns current, hourly, and weekly weather JSON data given lat and lng' do
+      it 'returns current, hourly, and weekly weather JSON data given lat and lng', :vcr do
         forecast = service.get_forecast(lat: "39.7392358", lng: "-104.990251")
 
         expect(forecast).to have_key(:latitude)
@@ -47,6 +47,26 @@ describe WeatherService, type: :service do
         expect(first_day).to have_key(:apparentTemperatureHigh)
         expect(first_day).to have_key(:apparentTemperatureLow)
         expect(first_day).to have_key(:uvIndex)
+      end
+    end
+    context '.get_current_weather' do
+      it 'returns current weather for location given lat and lng', :vcr do
+        current_weather = service.get_current_weather(lat: "39.7392358", lng: "-104.990251")
+
+        expect(current_weather).to have_key(:latitude)
+        expect(current_weather).to have_key(:longitude)
+        expect(current_weather).to have_key(:timezone)
+        currently = current_weather[:currently]
+        expect(currently).to have_key(:time)
+        expect(currently).to have_key(:summary)
+        expect(currently).to have_key(:icon)
+        expect(currently).to have_key(:nearestStormDistance)
+        expect(currently).to have_key(:precipProbability)
+        expect(currently).to have_key(:apparentTemperature)
+        expect(currently).to have_key(:uvIndex)
+
+        expect(current_weather).to_not have_key(:hourly)
+        expect(current_weather).to_not have_key(:daily)
       end
     end
   end
