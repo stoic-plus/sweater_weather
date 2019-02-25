@@ -1,5 +1,4 @@
 class FlickrService
-  require 'madison'
   def self.get_background_image(filter_params)
     get_photos_json(filter_params)[0..10].shuffle.pop
   end

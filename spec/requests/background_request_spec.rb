@@ -9,6 +9,7 @@ describe 'Background Image Request', type: :request do
       expect(response.content_type).to eq("application/json")
       expect(response.status).to eq(200)
       json = JSON.parse(response.body)["attributes"]
+      expect(json).to have_key("location")
       expect(json).to have_key("photo_url")
     end
   end
