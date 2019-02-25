@@ -24,5 +24,12 @@ describe WeatherFacade, type: :facade do
         expect(forecast.tonight_summary).to eq(dailies.first.summary)
       end
     end
+    context '.get_daily_weather' do
+      it 'returns DailyWeather objects for given location' do
+        daily_weathers = facade.get_daily_weather("denver, co")
+
+        expect(daily_weathers).to all(be_a(DailyWeather))
+      end
+    end
   end
 end
