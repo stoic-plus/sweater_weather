@@ -7,6 +7,10 @@ class WeatherService
     get_json(coordinates[:lat], coordinates[:lng], 'minutely,hourly,daily,alerts,flags')
   end
 
+  def self.get_daily_weather(coordinates)
+    get_json(coordinates[:lat], coordinates[:lng], 'currently,minutely,hourly,alerts,flags')
+  end
+
   private
 
   def self.get_json(lat,lng,exclude=nil)

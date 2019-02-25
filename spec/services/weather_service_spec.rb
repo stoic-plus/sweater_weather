@@ -91,7 +91,7 @@ describe WeatherService, type: :service do
         expect(first_day).to have_key(:temperatureMax)
 
         expect(daily_weather).to_not have_key(:hourly)
-        expect(daily_weather).to_not have_key(:daily)
+        expect(daily_weather).to_not have_key(:currently)
       end
     end
   end
