@@ -1,12 +1,11 @@
 class FlickrService
-  require 'madison'
-  def self.get_background_url(location)
-    form_url(get_json(form_search("denver,co"))[0..10].shuffle.pop)
+  def self.get_background_image(filter_params)
+    get_photos_json(filter_params)[0..10].shuffle.pop
   end
 
   private
 
-  def self.get_json(filter_params)
+  def self.get_photos_json(filter_params)
     response = conn.get do |req|
       req.params['api_key'] = ENV['FLICKR_KEY']
       req.params['nojsoncallback'] = 'true'
@@ -25,14 +24,5 @@ class FlickrService
     Faraday.new(url: "https://api.flickr.com/services/rest") do |f|
       f.adapter Faraday.default_adapter
     end
-  end
-
-  def self.form_url(result)
-    "https://farm#{result[:farm]}.staticflickr.com/#{result[:server]}/#{result[:id]}_#{result[:secret]}.jpg"
-  end
-
-  def self.form_search(location)
-    city, state_abbrev = location.split(",")
-    {tags: city, text: Madison.get_name(state_abbrev.lstrip) }
   end
 end
