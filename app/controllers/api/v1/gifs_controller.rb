@@ -17,7 +17,7 @@ class Api::V1::GifsController < Api::V1::BaseController
   def form_weather_gifs(daily_weather, gifs)
     daily_weather.map do |weather|
       index = gifs.find_index{|gif| gif.search_string == weather.icon}
-      gif = gifs.slice!(index, 1)
+      gif = gifs.slice!(index, 1)[0]
       WeatherGif.new(id: gif.id, time: weather.time, summary: weather.summary, url: gif.url)
     end
   end
