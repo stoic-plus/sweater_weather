@@ -26,13 +26,4 @@ class FlickrService
       f.adapter Faraday.default_adapter
     end
   end
-
-  def self.form_url(result)
-    "https://farm#{result[:farm]}.staticflickr.com/#{result[:server]}/#{result[:id]}_#{result[:secret]}.jpg"
-  end
-
-  def self.form_search(location)
-    city, state_abbrev = location.split(",")
-    {tags: city, text: Madison.get_name(state_abbrev.lstrip) }
-  end
 end
