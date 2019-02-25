@@ -7,6 +7,6 @@ describe Background, type: :model do
 
     background = Background.new(location, photo_url)
     expect(background.location).to eq(location)
-    expect(background.photo_url).to eq(location)
+    expect(background.photo_url).to eq(photo_urls)
   end
 end
