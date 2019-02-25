@@ -3,7 +3,8 @@ class Api::V1::GifsController < Api::V1::BaseController
 
   def show
     daily_weather = WeatherFacade.get_daily_weather(params["location"])
-    form_weather_gifs(daily_weather, GifService.multi_search(WeatherFacade.get_daily_icons(daily_weather)))
+    weather_gifs = form_weather_gifs(daily_weather, GifService.multi_search(WeatherFacade.get_daily_icons(daily_weather)))
+    render json: WeatherGifSerializer.new(weather_gifs)
   end
 
   def require_valid_api_key
@@ -17,7 +18,7 @@ class Api::V1::GifsController < Api::V1::BaseController
     daily_weather.map do |weather|
       index = gifs.find_index{|gif| gif.search_string == weather.icon}
       gif = gifs.slice!(index, 1)
-      WeatherGif.new(time: weather.time, summary: weather.summary, url: gif.url)
+      WeatherGif.new(id: gif.id, time: weather.time, summary: weather.summary, url: gif.url)
     end
   end
 end
