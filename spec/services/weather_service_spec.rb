@@ -69,5 +69,30 @@ describe WeatherService, type: :service do
         expect(current_weather).to_not have_key(:daily)
       end
     end
+    context '.get_daily_weather' do
+      it 'returns daily weather for location given lat and lng', :vcr do
+        daily_weather = service.get_daily_weather(lat: "39.7392358", lng: "-104.990251")
+
+        expect(daily_weather).to have_key(:latitude)
+        expect(daily_weather).to have_key(:longitude)
+        expect(daily_weather).to have_key(:timezone)
+        daily = daily_weather[:daily]
+        expect(daily).to have_key(:data)
+        expect(daily).to have_key(:summary)
+        expect(daily).to have_key(:icon)
+        first_day = daily[:data].first
+        expect(first_day).to have_key(:time)
+        expect(first_day).to have_key(:precipType)
+        expect(first_day).to have_key(:temperatureHigh)
+        expect(first_day).to have_key(:temperatureLow)
+        expect(first_day).to have_key(:apparentTemperatureHigh)
+        expect(first_day).to have_key(:apparentTemperatureLow)
+        expect(first_day).to have_key(:temperatureMin)
+        expect(first_day).to have_key(:temperatureMax)
+
+        expect(daily_weather).to_not have_key(:hourly)
+        expect(daily_weather).to_not have_key(:daily)
+      end
+    end
   end
 end
