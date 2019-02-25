@@ -11,6 +11,13 @@ class WeatherFacade
     end
   end
 
+  def self.get_daily_icons(daily_weather)
+    daily_weather.group_by {|dw| dw.icon }.reduce({}) do |icon_and_count, (icon, dw)|
+      icon_and_count[icon] = dw.count
+      icon_and_count
+    end
+  end
+
   private
 
   def self.get_coordinates(city_state)

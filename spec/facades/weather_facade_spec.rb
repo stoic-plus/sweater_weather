@@ -45,14 +45,13 @@ describe WeatherFacade, type: :facade do
         expect(first_day.temperatureMax).to eq(first_day_json[:temperatureMax])
       end
     end
-    context '.get_daily_descriptions' do
-      it 'retrieves sumarries, icons, and times given daily weather array', :vcr do
+    context '.get_daily_icons' do
+      it 'retrieves icons, and count of icon given daily weather array', :vcr do
         daily_weathers = facade.get_daily_weather("denver, co")
-        descriptions = facade.get_daily_descriptions(daily_weathers)
+        descriptions = facade.get_daily_icons(daily_weathers)
 
-        expect(descriptions.first).to have_key(:summary)
-        expect(descriptions.first).to have_key(:icon)
-        expect(descriptions.first).to have_key(:count)
+        expect(descriptions.first[0]).to be_a(String)
+        expect(descriptions.first[1]).to be_a(Integer)
       end
     end
   end
