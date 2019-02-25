@@ -6,6 +6,12 @@ class GifService
     end
   end
 
+  def self.multi_search(query_and_times)
+    query_and_times.reduce([]) do |gifs, (query, times)|
+      gifs << search_for_gifs(query)[0...times]
+    end.flatten
+  end
+
   private
 
   def self.get_search_json(query, limit=nil)
