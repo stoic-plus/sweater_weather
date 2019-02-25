@@ -2,7 +2,7 @@ class GifService
   def self.search_for_gifs(search_string)
     gifs = get_search_json(search_string)
     gifs.map do |raw_gif|
-      Gif.new(raw_gif)
+      Gif.new(raw_gif, search_string)
     end
   end
 
