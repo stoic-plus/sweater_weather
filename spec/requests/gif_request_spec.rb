@@ -20,9 +20,11 @@ describe 'Gif Request', type: :request do
 
       expect(gifs.size).to eq(8)
       gifs.each do |gif|
-        expect(gif["attributes"]).to have_key("time")
-        expect(gif["attributes"]).to have_key("summary")
-        expect(gif["attributes"]["url"]).to match(/https:\/\/giphy.com\/gifs\/\w+/)
+        expect(gif).to have_key(:id)
+        expect(gif[:type]).to eq("weather_gif")
+        expect(gif[:attributes]).to have_key(:time)
+        expect(gif[:attributes]).to have_key(:summary)
+        expect(gif[:attributes][:url]).to match(/https:\/\/giphy.com\/gifs\/\w+/)
       end
     end
   end
