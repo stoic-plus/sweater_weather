@@ -10,7 +10,7 @@ describe 'Gif Request', type: :request do
         api_key: 'ashdgashdgajhsdga2342'
       )
 
-      get 'api/v1/gifs', params: {location: 'denver,co', api_key: user.api_key}
+      get '/api/v1/gifs', params: {location: 'denver,co', api_key: user.api_key}
 
       gifs = JSON.parse(response.body, symbolize_names: true)[:data]
 
