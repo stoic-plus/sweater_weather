@@ -4,6 +4,13 @@ class WeatherFacade
     Forecast.new(weather_attributes(weather_json))
   end
 
+  def self.get_daily_weather(city_state)
+    weather_json = WeatherService.get_daily_weather(get_coordinates(city_state))[:daily][:data]
+    weather_json.map do |raw_daily|
+      DailyWeather.new(raw_daily)
+    end
+  end
+
   private
 
   def self.get_coordinates(city_state)
