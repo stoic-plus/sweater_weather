@@ -8,6 +8,16 @@ module ApplicationHelper
       @message = attributes[:message]
     end
   end
+  class FavoritesMessage < ApiMessage
+    attr_reader :current_weather
+    def initialize(attributes)
+      super(
+        id: attributes[:id],
+        message: attributes[:message]
+      )
+      @current_weather = attributes[:current_weather]
+    end
+  end
   class ApiError < ApiMessage
     def initialize(attributes)
       super
