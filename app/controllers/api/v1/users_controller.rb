@@ -2,7 +2,6 @@ class Api::V1::UsersController < Api::V1::BaseController
   def create
     user = User.new(user_params)
     set_api_key(user)
-    # is this JSON-API compliant?
     if user.save
       render json: ApiKeySerializer.new(ApiKey.new(user.api_key)), status: 201
     else
