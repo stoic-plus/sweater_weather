@@ -1,6 +1,6 @@
 class GifService
   def self.search_for_gifs(search_string)
-    make_gifs(get_search_json(search_string))
+    make_gifs(get_search_json(search_string), search_string)
   end
 
   def self.multi_search(query_and_times)
