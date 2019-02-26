@@ -12,12 +12,12 @@ describe 'Background Image Request', type: :request do
       expect(json).to have_key("location")
       expect(json).to have_key("photo_url")
     end
-    it 'does not make api call if background in cache' do
+    it 'does not make api call if background in cache', :vcr do
       Rails.cache.write("denver,co-background", "https://farm8.staticflickr.com/7662/16497776394_2ea733dd23.jpg", expires_in: 1.days)
-      expect(FlickrFacade).not_to receive(:get_background_url)
+      expect(FlickrService).not_to receive(:get_background_image)
 
       travel 18.hours
-      
+
       get '/api/v1/backgrounds', params: {location: "denver,co"}
 
       expect(response).to be_successful
