@@ -8,6 +8,12 @@ class Location < ApplicationRecord
     city_state = standardize_location(location)
     location = find_by(city_state)
     return location if location
+    make_by(city_state)
+  end
+
+  private
+
+  def self.make_by(city_state)
     coordinates = GeocodingService.get_lat_lng("#{city_state[:city]},#{city_state[:state]}")
     create(
       city: city_state[:city],
@@ -16,8 +22,6 @@ class Location < ApplicationRecord
       longitude: coordinates[:lng]
     )
   end
-
-  private
 
   def self.standardize_location(location)
     city, state = location.gsub(" ", "").downcase.split(",")
