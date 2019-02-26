@@ -6,6 +6,10 @@ class User < ApplicationRecord
   validates_presence_of :email, :password
   validates :password_confirmation, presence: true, on: :create
 
+  def self.get_favorites_for(user_attributes)
+    find_by(user_attributes).get_favorites
+  end
+
   def get_favorites
     locations.map do |location|
       current_weather = CurrentWeather.for_location(lat: location.latitude, lng: location.longitude)
