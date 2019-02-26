@@ -36,23 +36,20 @@ describe 'Deleting Favorites', type: :request do
 
       expect(Favorite.count).to eq(1)
       expect(user.locations.size).to eq(1)
-      json = JSON.parse(response.body)["data"]
-      expect(json.size).to eq(2)
+      json = JSON.parse(response.body)["data"]["attributes"]
+
       expect(response).to be_successful
       expect(response.content_type).to eq("application/json")
-      expect(response.status).to eq(200)
+      expect(response.status).to eq(202)
 
-      expect(json.first["attributes"]["location"]).to eq("Denver,CO")
-      expect(json.second["attributes"]["location"]).to eq("Austin,TX")
-      json.each do |location_json|
-        expect(location_json["attributes"]["current_weather"]).to have_key("summary")
-        expect(location_json["attributes"]["current_weather"]).to have_key("precipProbability")
-        expect(location_json["attributes"]["current_weather"]).to have_key("humidity")
-        expect(location_json["attributes"]["current_weather"]).to have_key("uvIndex")
-        expect(location_json["attributes"]["current_weather"]).to have_key("time")
-        expect(location_json["attributes"]["current_weather"]).to have_key("temperature")
-        expect(location_json["attributes"]["current_weather"]).to have_key("apparentTemperature")
-      end
+      expect(json["message"]).to eq("successfully deleted favorite")
+      expect(json["favorite"]["location"]).to eq("Denver,CO")
+      expect(json["favorite"]["current_weather"]).to have_key("summary")
+      expect(json["favorite"]["current_weather"]).to have_key("precipProbability")
+      expect(json["favorite"]["current_weather"]).to have_key("humidity")
+      expect(json["favorite"]["current_weather"]).to have_key("uvIndex")
+      expect(json["favorite"]["current_weather"]).to have_key("time")
+      expect(json["favorite"]["current_weather"]).to have_key("apparentTemperature")
     end
   end
   context 'when a DELETE is made to /api/v1/favorites without API key' do
