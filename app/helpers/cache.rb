@@ -9,12 +9,12 @@ module Cache
     Rails.cache.write("#{location}-background", background_url, expires_in: BACKGROUND_EXPIRATION)
   end
   def self.read_forecast(location)
-    Rails.cache.read(location)
+    Rails.cache.read("#{location}-forecast")
   end
   def self.write_forecast(location, forecast)
-    Rails.cache.write(location, forecast, expires_in: FORECAST_EXPIRATION)
+    Rails.cache.write("#{location}-forecast", forecast, expires_in: FORECAST_EXPIRATION)
   end
-  def self.read_current_weather(location, current_weather)
+  def self.read_current_weather(location)
     Rails.cache.read("#{location}-current")
   end
   def self.write_current_weather(location, current_weather)
