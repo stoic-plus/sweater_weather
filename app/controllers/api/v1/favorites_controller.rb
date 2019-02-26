@@ -1,4 +1,5 @@
 class Api::V1::FavoritesController < Api::V1::BaseController
+  skip_before_action :verify_authenticity_token
   before_action :require_valid_api_key
 
   def index
