@@ -1,16 +1,19 @@
 class FlickrFacade
   require 'madison'
   def self.get_background_url(location)
-    background_url = Rails.cache.read("#{location}-background")
+    background_url = Cache.read_background(location)
     unless background_url
-      image_json = FlickrService.get_background_image(form_search(location))
-      background_url = form_url(image_json)
-      Rails.cache.write("#{location}-background", background, expires_in: 1.days)
+      background_url = form_url(get_image_json(location))
+      Cache.write_background(location, background_url)
     end
     background_url
   end
 
   private
+
+  def self.get_image_json(location)
+    FlickrService.get_background_image(form_search(location))
+  end
 
   def self.form_url(result)
     "https://farm#{result[:farm]}.staticflickr.com/#{result[:server]}/#{result[:id]}_#{result[:secret]}.jpg"
