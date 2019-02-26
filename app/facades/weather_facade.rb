@@ -2,7 +2,7 @@ class WeatherFacade
   def self.get_forecast(city_state)
     forecast = Rails.cache.read(city_state)
     unless forecast
-      weather_json = WeatherService.get_forecast(get_coordinates(city_state))
+      weather_json = get_weather_json(:forecast)
       forecast = Forecast.new(weather_attributes(weather_json))
       Rails.cache.write(city_state, forecast, expires_in: 1.hour)
     end
@@ -10,10 +10,7 @@ class WeatherFacade
   end
 
   def self.get_daily_weather(city_state)
-    weather_json = WeatherService.get_daily_weather(get_coordinates(city_state))[:daily][:data]
-    weather_json.map do |raw_daily|
-      DailyWeather.new(raw_daily)
-    end
+    DailyWeather.from_weather_data(get_weather_json(:daily))
   end
 
   def self.get_daily_icons(daily_weather=nil)
@@ -25,6 +22,11 @@ class WeatherFacade
   end
 
   private
+
+  def self.get_weather_json(type)
+    WeatherService.get_forecast(get_coordinates(city_state)) if type == :forecast
+    WeatherService.get_daily_weather(get_coordinates(city_state))[:daily][:data] if type == :daily
+  end
 
   def self.get_coordinates(city_state)
     location = Location.find_or_make_by(city_state)
