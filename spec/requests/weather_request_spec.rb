@@ -51,7 +51,6 @@ describe 'Weather for a City', type: :request do
         latitude: '39.7392358',
         longitude: '-104.990251'
       )
-      expect(WeatherFacade).not_to receive(:get_coordinates)
       expect(GeocodingService).not_to receive(:get_lat_lng)
 
       get '/api/v1/forecast', params: {location: 'denver,co'}
