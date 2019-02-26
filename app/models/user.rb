@@ -12,9 +12,13 @@ class User < ApplicationRecord
 
   def get_favorites
     locations.map do |location|
-      current_weather = CurrentWeather.for_location(lat: location.latitude, lng: location.longitude)
-      location = "#{location.city.capitalize}, #{location.state.upcase}"
-      FavoriteWeather.new(location, current_weather)
+      city_state = Location.as_city_state(location)
+      current_weather = CurrentWeather.for_location(
+        location: city_state,
+        lat: location.latitude,
+        lng: location.longitude
+      )
+      FavoriteWeather.new(city_state, current_weather)
     end
   end
 
