@@ -12,7 +12,8 @@ class Location < ApplicationRecord
   end
 
   def self.as_city_state(location)
-    "#{location.city.capitalize},#{location.state.upcase}"
+    return "#{location.city.capitalize},#{location.state.upcase}" if location.class == Location
+    return location.gsub(" ", "")
   end
 
   private

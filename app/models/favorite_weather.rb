@@ -7,4 +7,9 @@ class FavoriteWeather
     @location = location
     @current_weather = current_weather
   end
+
+  def self.from_location(location)
+    city_state = Location.as_city_state(location)
+    new(city_state, WeatherFacade.get_current_weather(city_state))
+  end
 end
