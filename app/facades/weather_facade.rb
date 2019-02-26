@@ -16,7 +16,7 @@ class WeatherFacade
   def self.get_current_weather(city_state)
     current_weather = Cache.read_current_weather(city_state)
     unless current_weather
-      current_weather = DailyWeather.new(get_weather_json(city_state, :current))
+      current_weather = CurrentWeather.new(get_weather_json(city_state, :current))
       Cache.write_current_weather(city_state, current_weather)
     end
     current_weather
@@ -35,7 +35,7 @@ class WeatherFacade
   def self.get_weather_json(city_state, type)
     return WeatherService.get_forecast(get_coordinates(city_state)) if type == :forecast
     return WeatherService.get_daily_weather(get_coordinates(city_state))[:daily][:data] if type == :daily
-    return WeatherService.get_current_weather(get_coordinates(city_state)[:currently]) if type == :current
+    return WeatherService.get_current_weather(get_coordinates(city_state))[:currently] if type == :current
   end
 
   def self.get_coordinates(city_state)
