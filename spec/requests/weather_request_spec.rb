@@ -42,7 +42,7 @@ describe 'Weather for a City', type: :request do
       expect(first_day).to have_key(:temperatureMin)
       expect(first_day).to have_key(:temperatureMax)
     end
-    it 'creates location in DB' do
+    it 'creates location in DB', :vcr do
       expect(Location.count).to eq(0)
       get '/api/v1/forecast', params: {location: 'denver,co'}
 
@@ -52,7 +52,7 @@ describe 'Weather for a City', type: :request do
       expect(Location.first.state).to eq("co")
     end
   end
-  context 'given a request with a location param with location already in DB' do
+  context 'given a request with a location param with location already in DB', :vcr do
     it 'an api call is not made to get coordinates' do
       Location.create(
         city: 'denver',
@@ -65,6 +65,16 @@ describe 'Weather for a City', type: :request do
       get '/api/v1/forecast', params: {location: 'denver,co'}
 
       expect(response).to be_successful
+    end
+  end
+  context 'given a request with a location already in cache (under 1 hour old)' do
+    it 'an api call is not made to get forecasted weather', :vcr do
+      Rails.cache.write('denver,co', WeatherFacade.get_forecast("denver,co"), expires_in: 1.hour)
+      expect(WeatherService).not_to receive(:get_forecast)
+
+      travel 45.minutes
+       
+      get '/api/v1/forecast', params: {location: 'denver,co'}
     end
   end
 end
