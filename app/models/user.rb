@@ -17,4 +17,9 @@ class User < ApplicationRecord
       FavoriteWeather.new(location, current_weather)
     end
   end
+
+  def set_api_key
+    self.api_key = Digest::MD5.hexdigest(password_digest)
+    save
+  end
 end
