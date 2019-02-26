@@ -1,7 +1,12 @@
 class WeatherFacade
   def self.get_forecast(city_state)
-    weather_json = WeatherService.get_forecast(get_coordinates(city_state))
-    Forecast.new(weather_attributes(weather_json))
+    forecast = Rails.cache.read(city_state)
+    unless forecast
+      weather_json = WeatherService.get_forecast(get_coordinates(city_state))
+      forecast = Forecast.new(weather_attributes(weather_json))
+      Rails.cache.write(city_state, forecast, expires_in: 1.hour)
+    end
+    forecast
   end
 
   def self.get_daily_weather(city_state)
