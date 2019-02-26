@@ -42,8 +42,8 @@ describe 'Deleting Favorites', type: :request do
       expect(response.content_type).to eq("application/json")
       expect(response.status).to eq(200)
 
-      expect(json.first["attributes"]["location"]).to eq("Denver, CO")
-      expect(json.second["attributes"]["location"]).to eq("Austin, TX")
+      expect(json.first["attributes"]["location"]).to eq("Denver,CO")
+      expect(json.second["attributes"]["location"]).to eq("Austin,TX")
       json.each do |location_json|
         expect(location_json["attributes"]["current_weather"]).to have_key("summary")
         expect(location_json["attributes"]["current_weather"]).to have_key("precipProbability")

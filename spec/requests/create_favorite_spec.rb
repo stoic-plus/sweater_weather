@@ -22,6 +22,7 @@ describe 'Create Favorite', type: :request do
 
       json = JSON.parse(response.body)["data"]["attributes"]
       expect(json["message"]).to eq("successfully created favorite")
+      expect(json[""]).to eq()
       expect(response).to be_successful
       expect(response.content_type).to eq("application/json")
       expect(response.status).to eq(200)

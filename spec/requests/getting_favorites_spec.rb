@@ -3,6 +3,7 @@ require 'rails_helper'
 describe 'Getting Favorites', type: :request do
   context 'when a GET is made to /api/v1/favorites with valid API key' do
     it 'returns current weather for user\s favorites', :vcr do
+      Rails.cache.clear
       user = User.create(
         email: "whatever@example.com",
         password: "password",
@@ -36,8 +37,8 @@ describe 'Getting Favorites', type: :request do
       expect(response.content_type).to eq("application/json")
       expect(response.status).to eq(200)
 
-      expect(json.first["attributes"]["location"]).to eq("Denver, CO")
-      expect(json.second["attributes"]["location"]).to eq("Austin, TX")
+      expect(json.first["attributes"]["location"]).to eq("Denver,CO")
+      expect(json.second["attributes"]["location"]).to eq("Austin,TX")
       json.each do |location_json|
         expect(location_json["attributes"]["current_weather"]).to have_key("summary")
         expect(location_json["attributes"]["current_weather"]).to have_key("precipProbability")
@@ -66,23 +67,20 @@ describe 'Getting Favorites', type: :request do
         "Content-Type" => "application/json",
         "Accept" => "application/json"
       }
-      Rails.cache.write("denver,co-current", WeatherService.get_current_weather(lat: "39.7392358", lng: "-104.990251"), expires_in: 40.minutes)
-
-      expect(CurrentWeather).not_to receive(:for_location)
+      Cache.write_current_weather("Denver,CO", WeatherFacade.get_current_weather("Denver,CO"))
       expect(WeatherService).not_to receive(:get_current_weather)
 
       travel 30.minutes
-      
+
       get '/api/v1/favorites', params: { api_key: user.api_key, headers: headers }
 
       json = JSON.parse(response.body)["data"]
-      expect(json.size).to eq(2)
+      expect(json.size).to eq(1)
       expect(response).to be_successful
       expect(response.content_type).to eq("application/json")
       expect(response.status).to eq(200)
 
-      expect(json.first["attributes"]["location"]).to eq("Denver, CO")
-      expect(json.second["attributes"]["location"]).to eq("Austin, TX")
+      expect(json.first["attributes"]["location"]).to eq("Denver,CO")
       json.each do |location_json|
         expect(location_json["attributes"]["current_weather"]).to have_key("summary")
         expect(location_json["attributes"]["current_weather"]).to have_key("precipProbability")
