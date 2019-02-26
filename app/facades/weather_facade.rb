@@ -13,6 +13,15 @@ class WeatherFacade
     DailyWeather.from_weather_data(get_weather_json(city_state, :daily))
   end
 
+  def self.get_current_weather(city_state)
+    current_weather = Cache.read_current_weather(city_state)
+    unless current_weather
+      current_weather = DailyWeather.new(get_weather_json(city_state, :current))
+      Cache.write_current_weather(city_state, current_weather)
+    end
+    current_weather
+  end
+
   def self.get_daily_icons(daily_weather=nil)
     daily_weather = get_daily_weather unless daily_weather
     daily_weather.group_by {|dw| dw.icon }.reduce({}) do |icon_and_count, (icon, dw)|
@@ -26,6 +35,7 @@ class WeatherFacade
   def self.get_weather_json(city_state, type)
     return WeatherService.get_forecast(get_coordinates(city_state)) if type == :forecast
     return WeatherService.get_daily_weather(get_coordinates(city_state))[:daily][:data] if type == :daily
+    return WeatherService.get_current_weather(get_coordinates(city_state)[:currently]) if type == :current
   end
 
   def self.get_coordinates(city_state)
