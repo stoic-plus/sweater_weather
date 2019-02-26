@@ -1,4 +1,7 @@
 class ApiMessageSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :message
+  attribute :message
+  attribute :favorite, if: Proc.new { |record|
+    record.respond_to?(:favorite)
+  }
 end
