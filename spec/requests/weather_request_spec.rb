@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'Weather for a City', type: :request do
   context 'given a request to /forecast with valid city/state in location param' do
-    it 'returns JSON with current, next 49 hours, and next week weather data' do
+    it 'returns JSON with current, next 49 hours, and next week weather data', :vcr do
       get '/api/v1/forecast', params: {location: 'denver,co'}
 
       expect(response).to be_successful
@@ -41,6 +41,22 @@ describe 'Weather for a City', type: :request do
       expect(first_day).to have_key(:temperatureLow)
       expect(first_day).to have_key(:temperatureMin)
       expect(first_day).to have_key(:temperatureMax)
+    end
+  end
+  context 'given a request with a location param with location already in DB' do
+    it 'an api call is not made to get coordinates', :vcr do
+      Location.create(
+        city: 'denver',
+        state: 'co',
+        latitude: '39.7392358',
+        longitude: '-104.990251'
+      )
+      expect(WeatherFacade).not_to receive(:get_coordinates)
+      expect(GeocodingService).not_to receive(:get_lat_lng)
+
+      get '/api/v1/forecast', params: {location: 'denver,co'}
+
+      expect(response).to be_successful
     end
   end
 end
