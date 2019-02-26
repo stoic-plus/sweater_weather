@@ -22,7 +22,8 @@ class WeatherFacade
   private
 
   def self.get_coordinates(city_state)
-    GeocodingService.get_lat_lng(city_state)
+    location = Location.find_or_make_by(city_state)
+    {lat: location.latitude, lng: location.longitude}
   end
 
   def self.weather_attributes(weather_json)
