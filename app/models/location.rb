@@ -5,7 +5,8 @@ class Location < ApplicationRecord
   validates_presence_of :city, :state, :latitude, :longitude
 
   def self.find_or_make_by(location)
-    location = find_by(standardize_location(location))
+    city_state = standardize_location(location)
+    location = find_by(city_state)
     return location if location
     coordinates = GeocodingService.get_lat_lng("#{city_state[:city]},#{city_state[:state]}")
     create(

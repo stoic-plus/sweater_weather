@@ -42,9 +42,18 @@ describe 'Weather for a City', type: :request do
       expect(first_day).to have_key(:temperatureMin)
       expect(first_day).to have_key(:temperatureMax)
     end
+    it 'creates location in DB' do
+      expect(Location.count).to eq(0)
+      get '/api/v1/forecast', params: {location: 'denver,co'}
+
+      expect(response).to be_successful
+      expect(Location.count).to eq(1)
+      expect(Location.first.city).to eq("denver")
+      expect(Location.first.state).to eq("co")
+    end
   end
   context 'given a request with a location param with location already in DB' do
-    it 'an api call is not made to get coordinates', :vcr do
+    it 'an api call is not made to get coordinates' do
       Location.create(
         city: 'denver',
         state: 'co',
