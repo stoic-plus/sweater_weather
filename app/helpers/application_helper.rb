@@ -9,13 +9,13 @@ module ApplicationHelper
     end
   end
   class FavoritesMessage < ApiMessage
-    attr_reader :current_weather
+    attr_reader :favorite
     def initialize(attributes)
       super(
         id: attributes[:id],
         message: attributes[:message]
       )
-      @current_weather = attributes[:current_weather]
+      @favorite = attributes[:favorite]
     end
   end
   class ApiError < ApiMessage
