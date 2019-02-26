@@ -7,13 +7,20 @@ class Api::V1::FavoritesController < Api::V1::BaseController
   end
 
   def create
-    User.find_by(api_key: params["api_key"]).locations << Location.find_or_make_by(params["location"])
-    render json: ApiMessageSerializer.new(ApiMessage.new(message: "successfully created favorite")), status: 200
+    location = Location.find_or_make_by(params["location"])
+    User.find_by(api_key: params["api_key"]).locations << location
+    render json: ApiMessageSerializer.new(favorite_response(location, :created)), status: 201
   end
 
   def destroy
-    favorites = User.get_favorites_for(api_key: params["api_key"])
     Favorite.destroy_favorite(params["api_key"], params["location"])
-    render json: FavoritesSerializer.new(favorites), status: 200
+    render json: ApiMessageSerializer.new(favorite_response(params["location"], :destroyed)), status: 202
+  end
+
+  private
+
+  def favorite_response(location, action)
+    message = action == :created ? "successfully created favorite" : "successfully deleted favorite"
+    FavoritesMessage.new(message: message, favorite: FavoriteWeather.from_location(location))
   end
 end
