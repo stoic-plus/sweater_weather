@@ -1,9 +1,6 @@
 class GifService
   def self.search_for_gifs(search_string)
-    gifs = get_search_json(search_string)
-    gifs.map do |raw_gif|
-      Gif.new(raw_gif, search_string)
-    end
+    make_gifs(get_search_json(search_string))
   end
 
   def self.multi_search(query_and_times)
@@ -13,6 +10,12 @@ class GifService
   end
 
   private
+
+  def self.make_gifs(gifs_json, search_string)
+    gifs_json.map do |raw_gif|
+      Gif.new(raw_gif, search_string)
+    end
+  end
 
   def self.get_search_json(query, limit=nil)
     response = conn.get do |req|
