@@ -22,10 +22,17 @@ describe 'Create Favorite', type: :request do
 
       json = JSON.parse(response.body)["data"]["attributes"]
       expect(json["message"]).to eq("successfully created favorite")
-      expect(json[""]).to eq()
+      expect(json["favorite"]["location"]).to eq("Denver,CO")
+      expect(json["favorite"]["current_weather"]).to have_key("summary")
+      expect(json["favorite"]["current_weather"]).to have_key("precipProbability")
+      expect(json["favorite"]["current_weather"]).to have_key("humidity")
+      expect(json["favorite"]["current_weather"]).to have_key("uvIndex")
+      expect(json["favorite"]["current_weather"]).to have_key("time")
+      expect(json["favorite"]["current_weather"]).to have_key("apparentTemperature")
+
       expect(response).to be_successful
       expect(response.content_type).to eq("application/json")
-      expect(response.status).to eq(200)
+      expect(response.status).to eq(201)
 
       expect(Location.count).to eq(1)
       expect(Favorite.count).to eq(1)
