@@ -13,11 +13,7 @@ class User < ApplicationRecord
   def get_favorites
     locations.map do |location|
       city_state = Location.as_city_state(location)
-      current_weather = CurrentWeather.for_location(
-        location: city_state,
-        lat: location.latitude,
-        lng: location.longitude
-      )
+      current_weather = WeatherFacade.get_current_weather(city_state)
       FavoriteWeather.new(city_state, current_weather)
     end
   end

@@ -11,6 +11,10 @@ class Location < ApplicationRecord
     make_by(city_state)
   end
 
+  def self.as_city_state(location)
+    "#{location.city.capitalize},#{location.state.upcase}"
+  end
+
   private
 
   def self.make_by(city_state)
