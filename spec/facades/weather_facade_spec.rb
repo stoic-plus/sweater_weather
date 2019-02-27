@@ -1,10 +1,16 @@
 require 'rails_helper'
 
 describe WeatherFacade, type: :facade do
+  include ApplicationHelper::WeatherMethods
   let(:facade) { WeatherFacade }
   describe 'class methods' do
     context '.get_forecast' do
       it 'returns Forecast Object with appropriate methods and Weather Objects - given valid city,state', :vcr do
+        allow(Cache).to receive(:read_forecast).and_return(nil)
+        allow(Cache).to receive(:write_forecast)
+
+        expect(WeatherService).to receive(:get_forecast).and_return(forecast_json)
+
         forecast = facade.get_forecast("denver,co")
 
         expect(forecast).to be_a(Forecast)
@@ -26,8 +32,8 @@ describe WeatherFacade, type: :facade do
     end
     context '.get_daily_weather' do
       it 'returns DailyWeather objects for given location', :vcr do
-        daily_weather_json = WeatherService.get_daily_weather(lat: "39.7392358", lng: "-104.990251")
-        first_day_json = daily_weather_json[:daily][:data].first
+        expect(WeatherService).to receive(:get_daily_weather).and_return(daily_json)
+        first_day_json = daily_json[:daily][:data].first
         daily_weathers = facade.get_daily_weather("denver, co")
 
         expect(daily_weathers).to all(be_a(DailyWeather))
@@ -46,9 +52,18 @@ describe WeatherFacade, type: :facade do
       end
     end
     context '.get_daily_icons' do
-      it 'retrieves icons, and count of icon given daily weather array', :vcr do
-        daily_weathers = facade.get_daily_weather("denver, co")
-        descriptions = facade.get_daily_icons(daily_weathers)
+      it 'retrieves icons, and count of icon by getting daily weather', :vcr do
+        daily_weather = DailyWeather.from_weather_data(daily_json[:daily][:data])
+        allow(facade).to receive(:get_daily_weather).and_return(daily_weather)
+        descriptions = facade.get_daily_icons(nil, "denver,co")
+
+        expect(descriptions.first[0]).to be_a(String)
+        expect(descriptions.first[1]).to be_a(Integer)
+      end
+      it 'retrieves icons, and count of icon given daily weather array' do
+        daily_weather = DailyWeather.from_weather_data(daily_json[:daily][:data])
+        expect(facade).not_to receive(:get_daily_weather)
+        descriptions = facade.get_daily_icons(daily_weather)
 
         expect(descriptions.first[0]).to be_a(String)
         expect(descriptions.first[1]).to be_a(Integer)
