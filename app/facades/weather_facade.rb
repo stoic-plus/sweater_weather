@@ -22,8 +22,8 @@ class WeatherFacade
     current_weather
   end
 
-  def self.get_daily_icons(daily_weather=nil)
-    daily_weather = get_daily_weather unless daily_weather
+  def self.get_daily_icons(daily_weather=nil, location=nil)
+    daily_weather = get_daily_weather(location) unless daily_weather
     daily_weather.group_by {|dw| dw.icon }.reduce({}) do |icon_and_count, (icon, dw)|
       icon_and_count[icon] = dw.count
       icon_and_count

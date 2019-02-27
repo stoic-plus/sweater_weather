@@ -11,7 +11,7 @@ class Api::V1::BaseController < ApplicationController
     api_key = params["api_key"]
     render_api_key_error(params["api_key"]) unless api_key && User.find_by(api_key: api_key)
   end
-    
+
   def render_api_key_error(api_key)
     if api_key
       render_error(message: 'invalid api_key', status: 404)
