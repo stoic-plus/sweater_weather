@@ -14,7 +14,7 @@ class GifFacade
     daily_weather.map do |weather|
       index = gifs.find_index{|gif| gif.search_string == weather.icon}
       gif = gifs.slice!(index, 1)[0]
-      WeatherGif.new(id: gif.id, time: weather.time, summary: weather.summary, gif: gif)
+      WeatherGif.new(time: weather.time, summary: weather.summary, gif: gif)
     end
   end
 
