@@ -23,7 +23,7 @@ module ApplicationHelper
       super
     end
   end
-  class ApiKey
+  class Users
     @@count = 0
     attr_reader :api_key, :id
     def initialize(api_key)
