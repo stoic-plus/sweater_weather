@@ -6,18 +6,18 @@ Also provides endpoints to return a background image for a location and GIPHS! G
 
 ### Table of Contents
 
-- [Getting Started]('#getting-started')
-- [Endpoints]('#endpoints')
-  * [City Forecast]('#city-forecast')
-  * [Account Creation]('#account-creation')
-  * [Session Creation]('#session-creation')
-  * [Favorites Creation]('#favorites-creation')
-  * [Favorites Deletion]('#favorites-deletion')
-  * [Favorites Listing]('#favorites-listing')
-  * [Background Image]('#background-image')
-  * [Giphs!]('#giphs!')
-- [Built With]('#built-with')
-- [Built By]('#built-by')
+- [Getting Started](#getting-started)
+- [Endpoints](#endpoints)
+  * [City Forecast](#city-forecast)
+  * [Account Creation](#account-creation)
+  * [Session Creation](#session-creation)
+  * [Favorites Creation](#favorites-creation)
+  * [Favorites Deletion](#favorites-deletion)
+  * [Favorites Listing](#favorites-listing)
+  * [Background Image](#background-image)
+  * [Giphs!](#giphs!)
+- [Built With](#built-with)
+- [Built By](#built-by)
 
 
 __Overview__
