@@ -27,7 +27,7 @@ describe WeatherFacade, type: :facade do
         expect(forecast.today_high).to eq(dailies.first.temperatureHigh)
         expect(forecast.today_low).to eq(dailies.first.temperatureLow)
         expect(forecast).to respond_to(:today_summary)
-        expect(forecast.tonight_summary).to eq(dailies.first.summary)
+        expect(forecast.tonight_summary).to eq(hourlies.last.summary)
       end
     end
     context '.get_daily_weather' do

@@ -18,6 +18,6 @@ class Forecast
     @daily_forecast = weather_data[:daily_forecast]
     @today_high = @daily_forecast.first.temperatureHigh
     @today_low = @daily_forecast.first.temperatureLow
-    @tonight_summary = @daily_forecast.first.summary
+    @tonight_summary = @hourly_forecast.last.summary
   end
 end

@@ -17,6 +17,6 @@ describe Forecast, type: :model do
     expect(forecast.daily_forecast).to eq(weather_attributes[:daily_forecast])
     expect(forecast.today_high).to eq(forecast.daily_forecast.first.temperatureHigh)
     expect(forecast.today_low).to eq(forecast.daily_forecast.first.temperatureLow)
-    expect(forecast.tonight_summary).to eq(forecast.daily_forecast.first.summary)
+    expect(forecast.tonight_summary).to eq(forecast.hourly_forecast.last.summary)
   end
 end
